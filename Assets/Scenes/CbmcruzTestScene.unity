@@ -250,6 +250,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5575639903345547868, guid: 7ed0c0ec17fa045ce8bb847c6c54fe3d,
+        type: 3}
+      propertyPath: EnableMovement
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5575639903345547868, guid: 7ed0c0ec17fa045ce8bb847c6c54fe3d,
+        type: 3}
+      propertyPath: advancedSettings.airControl
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7ed0c0ec17fa045ce8bb847c6c54fe3d, type: 3}
 --- !u!1 &1211532912
