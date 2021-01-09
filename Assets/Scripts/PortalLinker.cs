@@ -27,8 +27,16 @@ public class PortalLinker : MonoBehaviour
     {
       Transform hitObject = other.transform;
       float initialVelocity = hitObject.GetComponent<Rigidbody>().velocity.magnitude;
+      Bounds colliderBounds = hitObject.GetComponent<Collider>().bounds;
+      Debug.Log("Collider Center : " + colliderBounds.center);
+      Debug.Log("Collider Size : " + colliderBounds.size);
+      Debug.Log("Collider Bound Minimum : " + colliderBounds.max);
+      Debug.Log("Collider Bound Maximum : " + colliderBounds.min);
       hitObject.position = linkedPortal.position + (linkedPortal.up * 2.0f);
       hitObject.GetComponent<Rigidbody>().velocity = linkedPortal.up * initialVelocity;
+      Debug.Log(linkedPortal.up + " " + linkedPortal.up.magnitude);
+      Debug.Log(transform.up + " " + transform.up.magnitude);
+      Debug.Log(Mathf.Acos(Vector3.Dot(linkedPortal.up, transform.up)) * Mathf.Rad2Deg);
     }
   }
 }
