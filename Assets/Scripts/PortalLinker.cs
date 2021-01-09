@@ -3,6 +3,7 @@
 public class PortalLinker : MonoBehaviour
 {
   public Transform linkedPortal;
+  public Transform test;
 
   private void Awake()
   {
@@ -37,6 +38,9 @@ public class PortalLinker : MonoBehaviour
       Debug.Log(linkedPortal.up + " " + linkedPortal.up.magnitude);
       Debug.Log(transform.up + " " + transform.up.magnitude);
       Debug.Log(Mathf.Acos(Vector3.Dot(linkedPortal.up, transform.up)) * Mathf.Rad2Deg);
+      Debug.Log(transform.up - hitObject.rotation.eulerAngles.normalized);
+      test.position = linkedPortal.position + (linkedPortal.up * 2.0f);
+      test.rotation = Quaternion.LookRotation((transform.up - hitObject.rotation.eulerAngles.normalized), linkedPortal.up);
     }
   }
 }
