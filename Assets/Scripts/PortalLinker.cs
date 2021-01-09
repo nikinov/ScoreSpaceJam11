@@ -20,6 +20,7 @@ public class PortalLinker : MonoBehaviour
 
   private void OnTriggerEnter(Collider other)
   {
+    Debug.Log("Portal");
     if (!linkedPortal)
     {
       Debug.LogError("Portal " + transform.name + " is not linked");
@@ -27,20 +28,20 @@ public class PortalLinker : MonoBehaviour
     else
     {
       Transform hitObject = other.transform;
-      float initialVelocity = hitObject.GetComponent<Rigidbody>().velocity.magnitude;
+      Rigidbody hitRigidbody = hitObject.GetComponent<Rigidbody>();
+      float initialVelocity = hitRigidbody.velocity.magnitude;
       Bounds colliderBounds = hitObject.GetComponent<Collider>().bounds;
-      Debug.Log("Collider Center : " + colliderBounds.center);
-      Debug.Log("Collider Size : " + colliderBounds.size);
-      Debug.Log("Collider Bound Minimum : " + colliderBounds.max);
-      Debug.Log("Collider Bound Maximum : " + colliderBounds.min);
-      hitObject.position = linkedPortal.position + (linkedPortal.up * 2.0f);
-      hitObject.GetComponent<Rigidbody>().velocity = linkedPortal.up * initialVelocity;
-      Debug.Log(linkedPortal.up + " " + linkedPortal.up.magnitude);
-      Debug.Log(transform.up + " " + transform.up.magnitude);
-      Debug.Log(Mathf.Acos(Vector3.Dot(linkedPortal.up, transform.up)) * Mathf.Rad2Deg);
-      Debug.Log(transform.up - hitObject.rotation.eulerAngles.normalized);
-      test.position = linkedPortal.position + (linkedPortal.up * 2.0f);
-      test.rotation = Quaternion.LookRotation((transform.up - hitObject.rotation.eulerAngles.normalized), linkedPortal.up);
+      hitObject.position = linkedPortal.position + (linkedPortal.up * GetMaxValue(colliderBounds.size));
+      hitRigidbody.velocity = linkedPortal.up * initialVelocity;
+      //test.position = linkedPortal.position + (linkedPortal.up * 2.0f);
+      //test.rotation = Quaternion.LookRotation(linkedPortal.up - transform.up - hitObject.forward, linkedPortal.up);
+      //Debug.Log(Vector3.Angle(transform.up, hitObject.forward));
+      //Debug.Log(Vector3.Angle(transform.up, linkedPortal.up));
     }
+  }
+
+  private float GetMaxValue(Vector3 vector)
+  {
+    return Mathf.Max(vector.x, vector.y, vector.z);
   }
 }
