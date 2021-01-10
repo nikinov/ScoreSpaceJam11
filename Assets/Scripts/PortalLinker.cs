@@ -27,23 +27,12 @@ public class PortalLinker : MonoBehaviour
     else
     {
       Transform hitObject = other.transform;
-      Quaternion initialRotation;
-      if (hitObject.name == "RigidBodyFPSController")
-      {
-        initialRotation = Camera.main.transform.rotation;
-      }
-      else
-      {
-        initialRotation = hitObject.rotation;
-      }
+
       Rigidbody hitRigidbody = hitObject.GetComponent<Rigidbody>();
       float initialVelocity = hitRigidbody.velocity.magnitude;
       Bounds colliderBounds = hitObject.GetComponent<Collider>().bounds;
       hitObject.position = linkedPortal.position + (linkedPortal.up * GetMaxValue(colliderBounds.size));
       hitRigidbody.velocity = linkedPortal.up * initialVelocity;
-      hitObject.rotation = linkedPortal.rotation;
-      hitObject.rotation *= Quaternion.Euler(0.0f, 0.0f, 180.0f);
-      hitObject.rotation *= initialRotation;
     }
   }
 

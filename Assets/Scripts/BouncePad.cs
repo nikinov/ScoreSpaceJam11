@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class BouncePad : MonoBehaviour
 {
@@ -7,6 +8,7 @@ public class BouncePad : MonoBehaviour
   private void OnTriggerEnter(Collider other)
   {
     Rigidbody hitRigidbody = other.transform.GetComponent<Rigidbody>();
-    hitRigidbody.AddForce(transform.up * hitRigidbody.velocity.magnitude * bounceStrength);
+    hitRigidbody.AddForce(transform.up * hitRigidbody.velocity.magnitude * hitRigidbody.mass * bounceStrength);
+    print("eyyyyyyyy");
   }
 }
