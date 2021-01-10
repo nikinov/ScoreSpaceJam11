@@ -3,7 +3,6 @@
 public class PortalLinker : MonoBehaviour
 {
   public Transform linkedPortal;
-  public Transform test;
 
   private void Awake()
   {
@@ -28,15 +27,23 @@ public class PortalLinker : MonoBehaviour
     else
     {
       Transform hitObject = other.transform;
+      Quaternion initialRotation;
+      if (hitObject.name == "RigidBodyFPSController")
+      {
+        initialRotation = Camera.main.transform.rotation;
+      }
+      else
+      {
+        initialRotation = hitObject.rotation;
+      }
       Rigidbody hitRigidbody = hitObject.GetComponent<Rigidbody>();
       float initialVelocity = hitRigidbody.velocity.magnitude;
       Bounds colliderBounds = hitObject.GetComponent<Collider>().bounds;
       hitObject.position = linkedPortal.position + (linkedPortal.up * GetMaxValue(colliderBounds.size));
       hitRigidbody.velocity = linkedPortal.up * initialVelocity;
-      //test.position = linkedPortal.position + (linkedPortal.up * 2.0f);
-      //test.rotation = Quaternion.LookRotation(linkedPortal.up - transform.up - hitObject.forward, linkedPortal.up);
-      //Debug.Log(Vector3.Angle(transform.up, hitObject.forward));
-      //Debug.Log(Vector3.Angle(transform.up, linkedPortal.up));
+      hitObject.rotation = linkedPortal.rotation;
+      hitObject.rotation *= Quaternion.Euler(0.0f, 0.0f, 180.0f);
+      hitObject.rotation *= initialRotation;
     }
   }
 
