@@ -20,5 +20,6 @@ public class Obstacle : MonoBehaviour
         if(RespawnPlace != transform)
             player.currentSpawnPos = RespawnPlace;
         player.Spawn();
+        player.GetComponent<Rigidbody>().velocity = Vector3.zero;
     }
 }

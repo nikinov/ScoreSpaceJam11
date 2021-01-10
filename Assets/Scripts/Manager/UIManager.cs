@@ -6,7 +6,8 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private CanvasGroup MainPanel;
+    [SerializeField] private CanvasGroup mainPanel;
+    [SerializeField] private CanvasGroup finishPanel;
     [SerializeField] private TextMeshProUGUI ScoreText;
     private float _fadePanelTime;
     //private Player _player;
@@ -16,6 +17,7 @@ public class UIManager : MonoBehaviour
     {
         //_player = FindObjectOfType<Player>();
         ChangeScore(0);
+        SetPanel(mainPanel, 1);
     }
 
     // Update is called once per frame
@@ -26,12 +28,15 @@ public class UIManager : MonoBehaviour
 
     private void ResetPanels()
     {
-        MainPanel.alpha = 0;
-        MainPanel.gameObject.SetActive(false);
+        mainPanel.alpha = 0;
+        finishPanel.alpha = 0;
+        mainPanel.gameObject.SetActive(false);
+        finishPanel.gameObject.SetActive(false);
     }
 
     private void SetPanel(CanvasGroup panel, int endValue)
     {
+        ResetPanels();
         panel.gameObject.SetActive(true);
         StartCoroutine(waitForPanel(panel, endValue));
     }

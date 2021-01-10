@@ -9,19 +9,27 @@ public class Player : MonoBehaviour
 {
     public int score;
     public Transform currentSpawnPos;
+    public RigidbodyFirstPersonController rbController;
 
     [SerializeField] private Transform startingPos;
     
-    private RigidbodyFirstPersonController _rbController;
     private Rigidbody _rb;
     private UIManager _uiManager;
+    private GameManager _gameManager;
+    private List<Transform> _spawnPossitions;
 
     // Start is called before the first frame update
     void Awake()
     {
-        _rbController = GetComponent<RigidbodyFirstPersonController>();
+        _spawnPossitions = new List<Transform>();
+        foreach (Transform pos in startingPos)
+        {
+            _spawnPossitions.Add(pos);
+        }
+        _gameManager = FindObjectOfType<GameManager>();
+        rbController = GetComponent<RigidbodyFirstPersonController>();
         _rb = GetComponent<Rigidbody>();
-        currentSpawnPos = startingPos;
+        currentSpawnPos = _spawnPossitions[0];
         _uiManager = FindObjectOfType<UIManager>();
     }
 
@@ -34,13 +42,13 @@ public class Player : MonoBehaviour
     public void Death()
     {
         _rb.constraints = RigidbodyConstraints.FreezeAll;
-        _rbController.EnableMovement = false;
+        rbController.EnableMovement = false;
     }
 
     public void Spawn()
     {
         transform.position = currentSpawnPos.position;
-        _rbController.EnableMovement = true;
+        rbController.EnableMovement = true;
         _rb.constraints = RigidbodyConstraints.None;
         _rb.constraints = RigidbodyConstraints.FreezeRotation;
     }
@@ -56,6 +64,19 @@ public class Player : MonoBehaviour
         else if(other.gameObject.tag == "Obstacles")
         {
             other.collider.GetComponent<Obstacle>().Kill(this);
+        }
+        else if (other.gameObject.tag == "Finish")
+        {
+            _gameManager.NextStage();
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Changers")
+        {
+            print(Convert.ToInt32(other.gameObject.name.Replace(")", "").Replace("MoveTrigger (", "")));
+            currentSpawnPos = _spawnPossitions[Convert.ToInt32(other.gameObject.name.Replace(")", "").Replace("MoveTrigger (", ""))];
         }
     }
 

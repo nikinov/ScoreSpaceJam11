@@ -82,13 +82,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
         public MouseLook mouseLook = new MouseLook();
         public AdvancedSettings advancedSettings = new AdvancedSettings();
 
-
         private Rigidbody m_RigidBody;
         private CapsuleCollider m_Capsule;
         private float m_YRotation;
         private Vector3 m_GroundContactNormal;
         private bool m_Jump, m_PreviouslyGrounded, m_Jumping, m_IsGrounded;
-
 
         public Vector3 Velocity
         {
@@ -155,7 +153,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                     // always move along the camera forward as it is the direction that it being aimed at
                     Vector3 desiredMove = cam.transform.forward * input.y + cam.transform.right * input.x;
                     desiredMove = Vector3.ProjectOnPlane(desiredMove, m_GroundContactNormal).normalized;
-
+                    
                     desiredMove.x = desiredMove.x * movementSettings.CurrentTargetSpeed;
                     desiredMove.z = desiredMove.z * movementSettings.CurrentTargetSpeed;
                     desiredMove.y = desiredMove.y * movementSettings.CurrentTargetSpeed;
