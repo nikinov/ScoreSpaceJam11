@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private CanvasGroup mainPanel;
     [SerializeField] private CanvasGroup finishPanel;
     [SerializeField] private TextMeshProUGUI ScoreText;
+    public GameObject eButton;
     private float _fadePanelTime;
     //private Player _player;
 

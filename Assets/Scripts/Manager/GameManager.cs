@@ -17,10 +17,12 @@ public class GameManager : MonoBehaviour
     private List<Transform> _finishPlaces;
     private UIManager _uiManager;
     private Player _player;
+    private bool _eSet;
     
     private void Start()
     {
         _player = FindObjectOfType<Player>();
+        _uiManager = GetComponent<UIManager>();
         player.Spawn();
         _finishCount = -1;
         _finishPlaces = new List<Transform>();
@@ -34,12 +36,23 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Vector3.Distance(_player.transform.position, table.transform.position) <= .5f)
         {
-            if (Vector3.Distance(_player.transform.position, table.transform.position) <= .5f)
+            if (!_uiManager.eButton.activeInHierarchy)
             {
-                _player.transform.position = tablePlaceholderStart.position;
+                _uiManager.eButton.SetActive(true);
             }
+        }
+        else
+        {
+            if (_uiManager.eButton.activeInHierarchy)
+            {
+                _uiManager.eButton.SetActive(false);
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.E) && !_eSet)
+        {
+            _player.transform.position = tablePlaceholderStart.position;
         }
     }
 
