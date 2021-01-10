@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviour
             if (!_uiManager.eButton.activeInHierarchy)
             {
                 _uiManager.eButton.SetActive(true);
+                _eSet = true;
             }
         }
         else
@@ -48,9 +49,10 @@ public class GameManager : MonoBehaviour
             if (_uiManager.eButton.activeInHierarchy)
             {
                 _uiManager.eButton.SetActive(false);
+                _eSet = false;
             }
         }
-        if (Input.GetKeyDown(KeyCode.E) && !_eSet)
+        if (Input.GetKeyDown(KeyCode.E) && _eSet)
         {
             _player.transform.position = tablePlaceholderStart.position;
         }
