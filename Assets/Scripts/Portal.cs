@@ -54,12 +54,14 @@ public class Portal : MonoBehaviour
       print(playerCamera.transform.eulerAngles.x);
       print(playerCamera.transform.parent.eulerAngles.y);
       float newY = (playerCamera.transform.parent.eulerAngles.y + (linkedPortal.transform.rotation * Quaternion.Inverse(transform.rotation)).eulerAngles.y) % 360.0f;
+      float newX = (linkedPortal.transform.rotation * Quaternion.Inverse(transform.rotation)).eulerAngles.z;
       //playerCamera.transform.eulerAngles += new Vector3((linkedPortal.transform.rotation * Quaternion.Inverse(transform.rotation)).eulerAngles.z, 0.0f);
       playerCamera.transform.parent.eulerAngles = new Vector3(0.0f, newY);
-      thingToRotate.rotation = linkedPortal.transform.rotation * Quaternion.Inverse(transform.rotation) * transform.rotation;
-      playerCamera.transform.parent.GetComponent<Rigidbody>().isKinematic = true;
-      playerCamera.transform.parent.GetComponent<RigidbodyFirstPersonController>().EnableMovement = false;
+      //thingToRotate.rotation = linkedPortal.transform.rotation * Quaternion.Inverse(transform.rotation) * transform.rotation;
+      //playerCamera.transform.parent.GetComponent<Rigidbody>().isKinematic = true;
+      //playerCamera.transform.parent.GetComponent<RigidbodyFirstPersonController>().EnableMovement = false;
       //playerCamera.transform.parent.GetComponent<RigidbodyFirstPersonController>().ReinitMouseLook();
+      print(SideOfPortal(hitObject.transform.position));
 
       hitObject.position = linkedPortal.transform.position - (SideOfPortal(hitObject.transform.position) * linkedPortal.transform.forward * GetMaxValue(colliderBounds.size));
       hitRigidbody.velocity = -SideOfPortal(hitObject.transform.position) * linkedPortal.transform.forward * initialVelocity;

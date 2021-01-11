@@ -54,7 +54,7 @@ public class Player : MonoBehaviour
 
     public void Spawn()
     {
-        //transform.position = currentSpawnPos.position;
+        transform.position = currentSpawnPos.position;
         rbController.EnableMovement = true;
         _rb.constraints = RigidbodyConstraints.None;
         _rb.constraints = RigidbodyConstraints.FreezeRotation;
