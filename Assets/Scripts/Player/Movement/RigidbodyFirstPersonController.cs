@@ -270,5 +270,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 m_Jumping = false;
             }
         }
+
+    public void ReinitMouseLook()
+    {
+      mouseLook.Init(transform, cam.transform);
+    }
     }
 }

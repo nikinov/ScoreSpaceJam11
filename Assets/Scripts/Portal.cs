@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityStandardAssets.Characters.FirstPerson;
 
 public class Portal : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class Portal : MonoBehaviour
   public int recursionLimit = 5;
   public float nearClipOffset = 0.05f;
   public float nearClipLimit = 0.2f;
+
+  public Transform thingToRotate;
 
   private Camera playerCamera;
   private MeshFilter screenMeshFilter;
@@ -47,7 +50,16 @@ public class Portal : MonoBehaviour
       float initialVelocity = hitRigidbody.velocity.magnitude;
       Bounds colliderBounds = hitObject.GetComponent<Collider>().bounds;
 
-      Debug.Log(SideOfPortal(hitObject.transform.position));
+      print((linkedPortal.transform.rotation*Quaternion.Inverse(transform.rotation)).eulerAngles);
+      print(playerCamera.transform.eulerAngles.x);
+      print(playerCamera.transform.parent.eulerAngles.y);
+      float newY = (playerCamera.transform.parent.eulerAngles.y + (linkedPortal.transform.rotation * Quaternion.Inverse(transform.rotation)).eulerAngles.y) % 360.0f;
+      //playerCamera.transform.eulerAngles += new Vector3((linkedPortal.transform.rotation * Quaternion.Inverse(transform.rotation)).eulerAngles.z, 0.0f);
+      playerCamera.transform.parent.eulerAngles = new Vector3(0.0f, newY);
+      thingToRotate.rotation = linkedPortal.transform.rotation * Quaternion.Inverse(transform.rotation) * transform.rotation;
+      playerCamera.transform.parent.GetComponent<Rigidbody>().isKinematic = true;
+      playerCamera.transform.parent.GetComponent<RigidbodyFirstPersonController>().EnableMovement = false;
+      //playerCamera.transform.parent.GetComponent<RigidbodyFirstPersonController>().ReinitMouseLook();
 
       hitObject.position = linkedPortal.transform.position - (SideOfPortal(hitObject.transform.position) * linkedPortal.transform.forward * GetMaxValue(colliderBounds.size));
       hitRigidbody.velocity = -SideOfPortal(hitObject.transform.position) * linkedPortal.transform.forward * initialVelocity;
