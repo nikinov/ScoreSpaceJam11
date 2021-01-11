@@ -33,6 +33,10 @@ public class Player : MonoBehaviour
         rbController = GetComponent<RigidbodyFirstPersonController>();
         _rb = GetComponent<Rigidbody>();
         currentSpawnPos = _spawnPossitions[0];
+    }
+
+    private void Start()
+    {
         _audioManager.PlaySound("Music");
     }
 

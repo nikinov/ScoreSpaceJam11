@@ -11,7 +11,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/PlayScene.unity
     guid: 4df84dc3565de46b69bed3e19eef3beb
-  - enabled: 1
-    path: Assets/Scenes/FinishMenu.unity
-    guid: c88be65c5a3b94fcc8e8973f0158b83a
   m_configObjects: {}

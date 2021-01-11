@@ -11,12 +11,18 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI seconds;
     [SerializeField] private TextMeshProUGUI minutes;
     [SerializeField] private RectTransform playButton;
+
+    [SerializeField] private RectTransform panel;
     
     private void Start()
     {
+        
         seconds.text = PlayerPrefs.GetFloat("seconds").ToString();
         minutes.text = PlayerPrefs.GetFloat("minutes").ToString() + ":";
         StartCoroutine(waitForPlayButton());
+        
+        Cursor.visible = true;
+        Screen.lockCursor = false;
     }
 
     public void StartGame()
@@ -26,7 +32,7 @@ public class MainMenuManager : MonoBehaviour
 
     IEnumerator waitForPlayButton()
     {
-        playButton.position = new Vector3(Random.Range(300, 1300), Random.Range(100, 700));
+        playButton.position = new Vector3(Random.Range(300, panel.rect.width*3 - 300), Random.Range(100, panel.rect.height*3 - 300));
         yield return new WaitForSeconds(1);
         StartCoroutine(waitForPlayButton());
     }

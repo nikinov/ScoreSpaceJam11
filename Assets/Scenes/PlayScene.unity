@@ -9290,10 +9290,10 @@ RectTransform:
   m_Father: {fileID: 1000230297}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -261.38, y: 206.80003}
-  m_SizeDelta: {x: 263.84354, y: 27.598763}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 147, y: -25.199966}
+  m_SizeDelta: {x: 263.84354, y: 27.598755}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &668229034
 MonoBehaviour:
@@ -19450,7 +19450,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373ac6d68cba44ccbbf188aff4bc8ba8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: 0
   currentSpawnPos: {fileID: 0}
   rbController: {fileID: 0}
   startingPos: {fileID: 1410195869}
@@ -22996,9 +22995,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a36286043901443149b3c60b27152432, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  seconds: 0
+  minutes: 0
+  eButton: {fileID: 1411117824}
   mainPanel: {fileID: 1000230298}
   timerText: {fileID: 668229034}
-  eButton: {fileID: 1411117824}
 --- !u!114 &1759810857
 MonoBehaviour:
   m_ObjectHideFlags: 0
