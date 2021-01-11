@@ -50,7 +50,7 @@ public class Portal : MonoBehaviour
       Debug.Log(SideOfPortal(hitObject.transform.position));
 
       hitObject.position = linkedPortal.transform.position - (SideOfPortal(hitObject.transform.position) * linkedPortal.transform.forward * GetMaxValue(colliderBounds.size));
-      //hitRigidbody.velocity = -linkedPortal.transform.forward * initialVelocity;
+      hitRigidbody.velocity = SideOfPortal(hitObject.transform.position) * linkedPortal.transform.forward * initialVelocity;
       _audioManager.PlaySound("Portal");
     }
   }
