@@ -17,7 +17,7 @@ public class MainMenuManager : MonoBehaviour
     private void Start()
     {
         
-        seconds.text = PlayerPrefs.GetFloat("seconds").ToString();
+        seconds.text =  (Mathf.Round(PlayerPrefs.GetFloat("seconds") * 100) / 100).ToString();
         minutes.text = PlayerPrefs.GetFloat("minutes").ToString() + ":";
         StartCoroutine(waitForPlayButton());
         
