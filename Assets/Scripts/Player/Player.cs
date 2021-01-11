@@ -55,19 +55,13 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.tag == "Collectable")
-        {
-            score += 1;
-            Destroy(other.collider.gameObject);
-            _uiManager.ChangeScore(score);
-        }
-        else if(other.gameObject.tag == "Obstacles")
+        if(other.gameObject.tag == "Obstacles")
         {
             other.collider.GetComponent<Obstacle>().Kill(this);
         }
         else if (other.gameObject.tag == "Finish")
         {
-            _gameManager.NextStage();
+            _gameManager.Finished();
         }
     }
 

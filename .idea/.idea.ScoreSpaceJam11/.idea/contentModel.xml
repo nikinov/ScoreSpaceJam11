@@ -43,6 +43,9 @@
             </e>
             <e p="Player.cs" t="Include" />
           </e>
+          <e p="Portal" t="Include">
+            <e p="PortalAddon.cs" t="Include" />
+          </e>
           <e p="PortalLinker.cs" t="Include" />
           <e p="UI" t="Include">
             <e p="ClipText.cs" t="Include" />

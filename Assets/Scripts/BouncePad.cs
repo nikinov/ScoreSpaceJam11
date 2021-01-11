@@ -9,6 +9,5 @@ public class BouncePad : MonoBehaviour
   {
     Rigidbody hitRigidbody = other.transform.GetComponent<Rigidbody>();
     hitRigidbody.AddForce(transform.up * hitRigidbody.velocity.magnitude * hitRigidbody.mass * bounceStrength);
-    print("eyyyyyyyy");
   }
 }

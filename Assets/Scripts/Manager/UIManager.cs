@@ -1,32 +1,51 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private CanvasGroup mainPanel;
     [SerializeField] private CanvasGroup finishPanel;
-    [SerializeField] private TextMeshProUGUI ScoreText;
+    [SerializeField] private TextMeshProUGUI timerText;
     public GameObject eButton;
+    
     private float _fadePanelTime;
-    //private Player _player;
-
-    // Start is called before the first frame update
+    private float _timer;
+    private int _minutes;
+    private bool _timerOn;
+    
     void Start()
     {
         //_player = FindObjectOfType<Player>();
-        ChangeScore(0);
         SetPanel(mainPanel, 1);
+        _timerOn = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (_timerOn)
+        {
+            _timer += 1 * Time.deltaTime;
+            timerText.text = "TIME: "  + _minutes + ":" + Mathf.Round(_timer * 100) / 100;
+            if (_timer >= 60)
+            {
+                _minutes += 1;
+                _timer = 0;
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            SceneManager.LoadScene(0);
+        }
     }
+
 
     private void ResetPanels()
     {
@@ -41,11 +60,6 @@ public class UIManager : MonoBehaviour
         ResetPanels();
         panel.gameObject.SetActive(true);
         StartCoroutine(waitForPanel(panel, endValue));
-    }
-
-    public void ChangeScore(int Score)
-    {
-        ScoreText.text = "SCORE: " + Score;
     }
 
     IEnumerator waitForPanel(CanvasGroup panel, int endValue)

@@ -3,18 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private Transform FinishLine;
     [SerializeField] private Player player;
-    [SerializeField] private Transform finishPlaceholderParent;
     [SerializeField] private Transform table;
     [SerializeField] private Transform tablePlaceholderStart;
     [SerializeField] private Transform tablePlaceholderEnd;
 
     private int _finishCount;
-    private List<Transform> _finishPlaces;
     private UIManager _uiManager;
     private Player _player;
     private bool _eSet;
@@ -25,12 +23,6 @@ public class GameManager : MonoBehaviour
         _uiManager = GetComponent<UIManager>();
         player.Spawn();
         _finishCount = -1;
-        _finishPlaces = new List<Transform>();
-        foreach (Transform placeholder in finishPlaceholderParent)
-        {
-            _finishPlaces.Add(placeholder);
-        }
-        NextStage();
         StartCoroutine(waitForTeleport(table));
     }
 
@@ -58,22 +50,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void NextStage()
-    {
-        if (_finishCount + 1 != _finishPlaces.Count)
-        {
-            _finishCount += 1;
-            FinishLine.position = _finishPlaces[_finishCount].position;
-        }
-        else
-        {
-            Finished();
-        }
-    }
-
     public void Finished()
     {
         _player.rbController.EnableMovement = false;
+        print("gameFinished");
+        SceneManager.LoadScene(2);
     }
 
     IEnumerator waitForTeleport(Transform teleport)
