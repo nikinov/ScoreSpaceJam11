@@ -46,7 +46,10 @@ public class Portal : MonoBehaviour
       Rigidbody hitRigidbody = hitObject.GetComponent<Rigidbody>();
       float initialVelocity = hitRigidbody.velocity.magnitude;
       Bounds colliderBounds = hitObject.GetComponent<Collider>().bounds;
-      hitObject.position = linkedPortal.transform.position - (linkedPortal.transform.forward * GetMaxValue(colliderBounds.size));
+
+      Debug.Log(SideOfPortal(hitObject.transform.position));
+
+      hitObject.position = linkedPortal.transform.position - (SideOfPortal(hitObject.transform.position) * linkedPortal.transform.forward * GetMaxValue(colliderBounds.size));
       //hitRigidbody.velocity = -linkedPortal.transform.forward * initialVelocity;
       _audioManager.PlaySound("Portal");
     }
