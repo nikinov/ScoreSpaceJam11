@@ -15,12 +15,14 @@ public class GameManager : MonoBehaviour
     private int _finishCount;
     private UIManager _uiManager;
     private Player _player;
+    private AudioManager _audioManager;
     private bool _eSet;
     
     private void Start()
     {
         _player = FindObjectOfType<Player>();
         _uiManager = GetComponent<UIManager>();
+        _audioManager = FindObjectOfType<AudioManager>();
         player.Spawn();
         _finishCount = -1;
         StartCoroutine(waitForTeleport(table));
@@ -47,6 +49,7 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E) && _eSet)
         {
             _player.transform.position = tablePlaceholderStart.position;
+            _audioManager.PlaySound("Button");
         }
     }
 
@@ -54,7 +57,7 @@ public class GameManager : MonoBehaviour
     {
         _player.rbController.EnableMovement = false;
         print("gameFinished");
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene(0);
     }
 
     IEnumerator waitForTeleport(Transform teleport)
@@ -63,6 +66,7 @@ public class GameManager : MonoBehaviour
         Vector3 scale = teleport.localScale;
         teleport.DOScale(Vector3.zero, .15f);
         yield return new WaitForSeconds(2f);
+        _audioManager.PlaySound("Table");
         teleport.position = tablePlaceholderEnd.position;
         teleport.DOScale(scale, .2f);
     }

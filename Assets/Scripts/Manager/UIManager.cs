@@ -9,14 +9,14 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private CanvasGroup mainPanel;
-    [SerializeField] private CanvasGroup finishPanel;
-    [SerializeField] private TextMeshProUGUI timerText;
+    public float seconds;
+    public int minutes;
     public GameObject eButton;
     
+    [SerializeField] private CanvasGroup mainPanel;
+    [SerializeField] private TextMeshProUGUI timerText;
+    
     private float _fadePanelTime;
-    private float _timer;
-    private int _minutes;
     private bool _timerOn;
     
     void Start()
@@ -31,12 +31,12 @@ public class UIManager : MonoBehaviour
     {
         if (_timerOn)
         {
-            _timer += 1 * Time.deltaTime;
-            timerText.text = "TIME: "  + _minutes + ":" + Mathf.Round(_timer * 100) / 100;
-            if (_timer >= 60)
+            seconds += 1 * Time.deltaTime;
+            timerText.text = "TIME: "  + minutes + ":" + Mathf.Round(seconds * 100) / 100;
+            if (seconds >= 60)
             {
-                _minutes += 1;
-                _timer = 0;
+                minutes += 1;
+                seconds = 0;
             }
         }
 
@@ -50,9 +50,7 @@ public class UIManager : MonoBehaviour
     private void ResetPanels()
     {
         mainPanel.alpha = 0;
-        finishPanel.alpha = 0;
         mainPanel.gameObject.SetActive(false);
-        finishPanel.gameObject.SetActive(false);
     }
 
     private void SetPanel(CanvasGroup panel, int endValue)

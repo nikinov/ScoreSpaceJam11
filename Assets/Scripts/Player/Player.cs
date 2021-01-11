@@ -7,20 +7,23 @@ using UnityStandardAssets.Characters.FirstPerson;
 [RequireComponent(typeof(RigidbodyFirstPersonController))]
 public class Player : MonoBehaviour
 {
-    public int score;
     public Transform currentSpawnPos;
     public RigidbodyFirstPersonController rbController;
 
     [SerializeField] private Transform startingPos;
+    [SerializeField] private AudioManager _audioManager;
     
     private Rigidbody _rb;
-    private UIManager _uiManager;
     private GameManager _gameManager;
+    private UIManager _uiManager;
     private List<Transform> _spawnPossitions;
+    private bool _startNewSound;
+    private bool _startNewSound2;
 
     // Start is called before the first frame update
     void Awake()
     {
+        _uiManager = FindObjectOfType<UIManager>();
         _spawnPossitions = new List<Transform>();
         foreach (Transform pos in startingPos)
         {
@@ -30,7 +33,7 @@ public class Player : MonoBehaviour
         rbController = GetComponent<RigidbodyFirstPersonController>();
         _rb = GetComponent<Rigidbody>();
         currentSpawnPos = _spawnPossitions[0];
-        _uiManager = FindObjectOfType<UIManager>();
+        _audioManager.PlaySound("Music");
     }
 
     // Update is called once per frame
@@ -61,6 +64,8 @@ public class Player : MonoBehaviour
         }
         else if (other.gameObject.tag == "Finish")
         {
+            PlayerPrefs.SetFloat("seconds", _uiManager.seconds);
+            PlayerPrefs.SetInt("minutes", _uiManager.minutes);
             _gameManager.Finished();
         }
     }
@@ -71,12 +76,19 @@ public class Player : MonoBehaviour
         {
             print(Convert.ToInt32(other.gameObject.name.Replace(")", "").Replace("MoveTrigger (", "")));
             currentSpawnPos = _spawnPossitions[Convert.ToInt32(other.gameObject.name.Replace(")", "").Replace("MoveTrigger (", ""))];
+            if (!_startNewSound)
+            {
+                _startNewSound = true;
+                _audioManager.StopSound("Music");
+                _audioManager.PlaySound("Music2");
+            }            
+            if (!_startNewSound2 && Convert.ToInt32(other.gameObject.name.Replace(")", "").Replace("MoveTrigger (", "")) == 3)
+            {
+                _startNewSound2 = true;
+                _audioManager.StopSound("Music2");
+                _audioManager.PlaySound("Music3");
+            }
         }
-    }
-
-    private void ResetScore()
-    {
-        score = 0;
     }
 }
 

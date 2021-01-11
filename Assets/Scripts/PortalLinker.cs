@@ -3,9 +3,10 @@
 public class PortalLinker : MonoBehaviour
 {
   public Transform linkedPortal;
-
+  private AudioManager _audioManager;
   private void Awake()
   {
+    _audioManager = FindObjectOfType<AudioManager>();
     if (!linkedPortal)
     {
       Debug.LogWarning("Portal " + transform.name + " is not linked");
@@ -33,6 +34,7 @@ public class PortalLinker : MonoBehaviour
       Bounds colliderBounds = hitObject.GetComponent<Collider>().bounds;
       hitObject.position = linkedPortal.position + (linkedPortal.up * GetMaxValue(colliderBounds.size));
       hitRigidbody.velocity = linkedPortal.up * initialVelocity;
+      _audioManager.PlaySound("Portal");
     }
   }
 
