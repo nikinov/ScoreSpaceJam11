@@ -11,8 +11,6 @@ public class Portal : MonoBehaviour
   public float nearClipOffset = 0.05f;
   public float nearClipLimit = 0.2f;
 
-  public Transform thingToRotate;
-
   private Camera playerCamera;
   private MeshFilter screenMeshFilter;
   private RenderTexture viewTexture;
@@ -37,7 +35,7 @@ public class Portal : MonoBehaviour
 
   private void OnTriggerEnter(Collider other)
   {
-    Debug.Log("Portal");
+    //Debug.Log("Portal");
     if (!linkedPortal)
     {
       Debug.LogError("Portal " + transform.name + " is not linked");
@@ -50,19 +48,22 @@ public class Portal : MonoBehaviour
       float initialVelocity = hitRigidbody.velocity.magnitude;
       Bounds colliderBounds = hitObject.GetComponent<Collider>().bounds;
 
-      print((linkedPortal.transform.rotation*Quaternion.Inverse(transform.rotation)).eulerAngles);
-      print(playerCamera.transform.eulerAngles.x);
-      print(playerCamera.transform.parent.eulerAngles.y);
+      //print((linkedPortal.transform.rotation*Quaternion.Inverse(transform.rotation)).eulerAngles);
+      //print(playerCamera.transform.localEulerAngles.x);
+      //print(playerCamera.transform.parent.eulerAngles.y);
+      //print(Math.Sign(Vector3.Dot(playerCamera.transform.forward, transform.forward)));
+      //print(SideOfPortal(hitObject.transform.position));
+
+      //float newX = Mathf.Clamp(playerCamera.transform.localEulerAngles.x - (SideOfPortal((playerCamera.transform.position * 5.0f) + playerCamera.transform.forward) * (linkedPortal.transform.rotation * Quaternion.Inverse(transform.rotation)).eulerAngles.z), -90.0f, 90.0f);
       float newY = (playerCamera.transform.parent.eulerAngles.y + (linkedPortal.transform.rotation * Quaternion.Inverse(transform.rotation)).eulerAngles.y) % 360.0f;
-      float newX = (linkedPortal.transform.rotation * Quaternion.Inverse(transform.rotation)).eulerAngles.z;
-      //playerCamera.transform.eulerAngles += new Vector3((linkedPortal.transform.rotation * Quaternion.Inverse(transform.rotation)).eulerAngles.z, 0.0f);
+      //print(newX);
+      //print(newY);
+      //playerCamera.transform.localEulerAngles = new Vector3(newX, 0.0f);
       playerCamera.transform.parent.eulerAngles = new Vector3(0.0f, newY);
-      //thingToRotate.rotation = linkedPortal.transform.rotation * Quaternion.Inverse(transform.rotation) * transform.rotation;
       //playerCamera.transform.parent.GetComponent<Rigidbody>().isKinematic = true;
       //playerCamera.transform.parent.GetComponent<RigidbodyFirstPersonController>().EnableMovement = false;
-      //playerCamera.transform.parent.GetComponent<RigidbodyFirstPersonController>().ReinitMouseLook();
-      print(SideOfPortal(hitObject.transform.position));
-
+      playerCamera.transform.parent.GetComponent<RigidbodyFirstPersonController>().ReinitMouseLook();
+      
       hitObject.position = linkedPortal.transform.position - (SideOfPortal(hitObject.transform.position) * linkedPortal.transform.forward * GetMaxValue(colliderBounds.size));
       hitRigidbody.velocity = -SideOfPortal(hitObject.transform.position) * linkedPortal.transform.forward * initialVelocity;
       _audioManager.PlaySound("Portal");
