@@ -1,20 +1,26 @@
 ﻿using System;
 using UnityEngine;
 using UnityStandardAssets.Characters.FirstPerson;
+using System.Collections;
 
 public class Portal : MonoBehaviour
 {
   public Portal linkedPortal;
   public MeshRenderer screen;
   public Camera portalCamera;
+  public MeshRenderer portalTrim;
   public int recursionLimit = 5;
   public float nearClipOffset = 0.05f;
   public float nearClipLimit = 0.2f;
+  public float portalTimeout = 0.3f;
+  public Material portalActive;
+  public Material portalInactive;
 
   private Camera playerCamera;
   private MeshFilter screenMeshFilter;
   private RenderTexture viewTexture;
   private AudioManager _audioManager;
+  private bool portalIsUsable;
   private void Awake()
   {
     _audioManager = FindObjectOfType<AudioManager>();
@@ -26,6 +32,17 @@ public class Portal : MonoBehaviour
     portalCamera.enabled = false;
     screenMeshFilter = screen.GetComponent<MeshFilter>();
     screen.material.SetInt("displayMask", 1);
+    portalTrim.material = new Material(portalActive);
+    portalIsUsable = true;
+  }
+
+  private IEnumerator TimeoutPortal()
+  {
+    portalTrim.material = new Material(portalInactive);
+    portalIsUsable = false;
+    yield return new WaitForSeconds(portalTimeout);
+    portalTrim.material = new Material(portalActive);
+    portalIsUsable = true;
   }
 
   public void SetLinkedPortal(Portal portal)
@@ -42,31 +59,40 @@ public class Portal : MonoBehaviour
     }
     else
     {
-      Transform hitObject = other.transform;
+      if (portalIsUsable)
+      {
+        Transform hitObject = other.transform;
 
-      Rigidbody hitRigidbody = hitObject.GetComponent<Rigidbody>();
-      float initialVelocity = hitRigidbody.velocity.magnitude;
-      Bounds colliderBounds = hitObject.GetComponent<Collider>().bounds;
+        Rigidbody hitRigidbody = hitObject.GetComponent<Rigidbody>();
+        float initialVelocity = hitRigidbody.velocity.magnitude;
+        Bounds colliderBounds = hitObject.GetComponent<Collider>().bounds;
 
-      //print((linkedPortal.transform.rotation*Quaternion.Inverse(transform.rotation)).eulerAngles);
-      //print(playerCamera.transform.localEulerAngles.x);
-      //print(playerCamera.transform.parent.eulerAngles.y);
-      //print(Math.Sign(Vector3.Dot(playerCamera.transform.forward, transform.forward)));
-      //print(SideOfPortal(hitObject.transform.position));
+        //print((linkedPortal.transform.rotation*Quaternion.Inverse(transform.rotation)).eulerAngles);
+        //print(playerCamera.transform.localEulerAngles.x);
+        //print(playerCamera.transform.parent.eulerAngles.y);
+        //print(Math.Sign(Vector3.Dot(playerCamera.transform.forward, transform.forward)));
+        //print(SideOfPortal(hitObject.transform.position));
 
-      //float newX = Mathf.Clamp(playerCamera.transform.localEulerAngles.x - (SideOfPortal((playerCamera.transform.position * 5.0f) + playerCamera.transform.forward) * (linkedPortal.transform.rotation * Quaternion.Inverse(transform.rotation)).eulerAngles.z), -90.0f, 90.0f);
-      float newY = (playerCamera.transform.parent.eulerAngles.y + (linkedPortal.transform.rotation * Quaternion.Inverse(transform.rotation)).eulerAngles.y) % 360.0f;
-      //print(newX);
-      //print(newY);
-      //playerCamera.transform.localEulerAngles = new Vector3(newX, 0.0f);
-      playerCamera.transform.parent.eulerAngles = new Vector3(0.0f, newY);
-      //playerCamera.transform.parent.GetComponent<Rigidbody>().isKinematic = true;
-      //playerCamera.transform.parent.GetComponent<RigidbodyFirstPersonController>().EnableMovement = false;
-      playerCamera.transform.parent.GetComponent<RigidbodyFirstPersonController>().ReinitMouseLook();
-      
-      hitObject.position = linkedPortal.transform.position - (SideOfPortal(hitObject.transform.position) * linkedPortal.transform.forward * GetMaxValue(colliderBounds.size));
-      hitRigidbody.velocity = -SideOfPortal(hitObject.transform.position) * linkedPortal.transform.forward * initialVelocity;
-      _audioManager.PlaySound("Portal");
+        //float newX = Mathf.Clamp(playerCamera.transform.localEulerAngles.x - (SideOfPortal((playerCamera.transform.position * 5.0f) + playerCamera.transform.forward) * (linkedPortal.transform.rotation * Quaternion.Inverse(transform.rotation)).eulerAngles.z), -90.0f, 90.0f);
+        float newY = (playerCamera.transform.parent.eulerAngles.y + (linkedPortal.transform.rotation * Quaternion.Inverse(transform.rotation)).eulerAngles.y) % 360.0f;
+        //print(newX);
+        //print(newY);
+        //playerCamera.transform.localEulerAngles = new Vector3(newX, 0.0f);
+        playerCamera.transform.parent.eulerAngles = new Vector3(0.0f, newY);
+        //playerCamera.transform.parent.GetComponent<Rigidbody>().isKinematic = true;
+        //playerCamera.transform.parent.GetComponent<RigidbodyFirstPersonController>().EnableMovement = false;
+        playerCamera.transform.parent.GetComponent<RigidbodyFirstPersonController>().ReinitMouseLook();
+
+        hitObject.position = linkedPortal.transform.position - (SideOfPortal(hitObject.transform.position) * linkedPortal.transform.forward * GetMaxValue(colliderBounds.size));
+        hitRigidbody.velocity = -SideOfPortal(hitObject.transform.position) * linkedPortal.transform.forward * initialVelocity;
+        _audioManager.PlaySound("Portal");
+        StartCoroutine(TimeoutPortal());
+        StartCoroutine(linkedPortal.TimeoutPortal());
+      }
+      else
+      {
+        Debug.LogWarning("Tried to use inactive portal");
+      }
     }
   }
 

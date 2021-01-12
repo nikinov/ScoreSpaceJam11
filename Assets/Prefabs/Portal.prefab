@@ -576,9 +576,13 @@ MonoBehaviour:
   linkedPortal: {fileID: 0}
   screen: {fileID: 3382048155983574487}
   portalCamera: {fileID: 3382048157976968826}
+  portalTrim: {fileID: 3382048155987204071}
   recursionLimit: 5
   nearClipOffset: 0.05
   nearClipLimit: 0.2
+  portalTimeout: 0.3
+  portalActive: {fileID: 2100000, guid: f84780a32cf04e94d91b09a61705b37c, type: 2}
+  portalInactive: {fileID: 2100000, guid: d32b035550561479d84dc46e9344c8fe, type: 2}
 --- !u!65 &3382048157982622816
 BoxCollider:
   m_ObjectHideFlags: 0
