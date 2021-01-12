@@ -80,13 +80,13 @@ public class Player : MonoBehaviour
         {
             print(Convert.ToInt32(other.gameObject.name.Replace(")", "").Replace("MoveTrigger (", "")));
             currentSpawnPos = _spawnPossitions[Convert.ToInt32(other.gameObject.name.Replace(")", "").Replace("MoveTrigger (", ""))];
-            if (!_startNewSound)
+            if (!_startNewSound && Convert.ToInt32(other.gameObject.name.Replace(")", "").Replace("MoveTrigger (", "")) == 4)
             {
                 _startNewSound = true;
                 _audioManager.StopSound("Music");
                 _audioManager.PlaySound("Music2");
             }            
-            if (!_startNewSound2 && Convert.ToInt32(other.gameObject.name.Replace(")", "").Replace("MoveTrigger (", "")) == 3)
+            if (!_startNewSound2 && Convert.ToInt32(other.gameObject.name.Replace(")", "").Replace("MoveTrigger (", "")) == 8)
             {
                 _startNewSound2 = true;
                 _audioManager.StopSound("Music2");
