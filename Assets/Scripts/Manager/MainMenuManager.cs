@@ -19,7 +19,6 @@ public class MainMenuManager : MonoBehaviour
         
         seconds.text =  (Mathf.Round(PlayerPrefs.GetFloat("seconds") * 100) / 100).ToString();
         minutes.text = PlayerPrefs.GetInt("minutes").ToString() + ":";
-        StartCoroutine(waitForPlayButton());
         
         Cursor.visible = true;
         Screen.lockCursor = false;
@@ -28,12 +27,5 @@ public class MainMenuManager : MonoBehaviour
     public void StartGame()
     {
         SceneManager.LoadScene(1);
-    }
-
-    IEnumerator waitForPlayButton()
-    {
-        playButton.position = new Vector3(Random.Range(300, panel.rect.width*3 - 300), Random.Range(100, panel.rect.height*3 - 300));
-        yield return new WaitForSeconds(1);
-        StartCoroutine(waitForPlayButton());
     }
 }
